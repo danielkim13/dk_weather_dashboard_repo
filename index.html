@@ -16,13 +16,13 @@
       <h2 class="head-bar text-light font-weight-light"><i class="fa-solid fa-meteor mr-2"></i>Weather Dashboard</h2>
     </header>
 
-    <section class="all-wrapper">
-      <div class="left-wrapper flex-column col-md-4">
+    <section class="all-wrapper row">
+      <div class="left-wrapper flex-column col-md-4 p-4 bg-light">
         <div class="card text-center">
           <h3 class="card-header">Search By City</h3>
           <form id="cityForm" class="card-body">
-            <input class="mb-3" type="text" id="cityname" autofocus="true" placeholder="City Name" />
-            <button type="submit" class="btn btn-primary">Get Weather</button>
+            <input class="mb-3" type="text" id="cityName" autofocus="true" placeholder="City Name" />
+            <button type="submit" id="weatherBtn" class="btn btn-primary">Get Weather</button>
           </form>
         </div>
         <div class="history-wrapper text-center border-top mt-3 p-2">
@@ -33,9 +33,9 @@
           <p>test5</p>
         </div>
       </div>
-      <div class="right-wrapper col-md-8 flex-column">
-        <div class="current-weather-wrapper"></div>
-        <div class="future-forecast-wrapper"></div>
+      <div class="right-wrapper col-md-8 flex-column p-4">
+        <div class="current-weather-wrapper">Current weather</div>
+        <div class="future-forecast-wrapper">Five Day Forecast</div>
       </div>
     </section>
 
