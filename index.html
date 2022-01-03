@@ -12,12 +12,12 @@
     <title>Weather Dashboard</title>
   </head>
   <body>
-    <header class="row d-flex justify-content-center py-3 shadow-sm p-2 mb-3 bg-info rounded sticky-top">
+    <header class="row d-flex justify-content-center py-2 shadow-sm p-1 mb-3 bg-info rounded sticky-top">
       <h2 class="head-bar text-light font-weight-light"><i class="fa-solid fa-meteor mr-2"></i>Weather Dashboard</h2>
     </header>
 
     <section class="all-wrapper row">
-      <div class="left-wrapper flex-column col-md-4 p-4 bg-light">
+      <div class="left-wrapper flex-column col-md-3 ml-3 p-1 bg-light">
         <div class="card text-center">
           <h3 class="card-header">Search By City</h3>
           <form id="cityForm" class="card-body">
@@ -25,15 +25,9 @@
             <button type="submit" id="weatherBtn" class="btn btn-primary">Get Weather</button>
           </form>
         </div>
-        <div class="history-wrapper text-center border-top mt-3 p-2">
-          <p>test1</p>
-          <p>test2</p>
-          <p>test3</p>
-          <p>test4</p>
-          <p>test5</p>
-        </div>
+        <div class="history-wrapper text-center border border-dark border-start-0 border-end-0 my-2 p-2"></div>
       </div>
-      <div class="right-wrapper col-md-8 flex-column p-4">
+      <div class="right-wrapper col-md-8 flex-column p-2">
         <div class="current-weather-wrapper">Current weather</div>
         <div class="future-forecast-wrapper">Five Day Forecast</div>
       </div>
