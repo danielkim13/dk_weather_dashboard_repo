@@ -36,3 +36,31 @@ function savedSearch(searchCity) {
   citySearchArry.push(cityObj);
   localStorage.setItem("city", JSON.stringify(citySearchArry));
 }
+
+// displaying Historical search and when clicked it, the city name gets push to input.
+function displayHistoricalSearch() {
+  JSON.parse(localStorage.getItem("city")) || [];
+  $(".history-wrapper").append("<ul class='list-wrapper p-1 m-0'>");
+
+  for (let i = 0; i < citySearchArry.length; i++) {
+    $(".list-wrapper").append("<li class='history-list p-2'>" + citySearchArry[i].city);
+  }
+}
+displayHistoricalSearch();
+
+/* couldn't figure out how to display the search city instantly
+when user issue input value, so creating function to add the value to the end of
+ul element */
+function instantDisplay(inputValue) {
+  $(".list-wrapper").append("<li class='history-list p-2'>" + inputValue + "</li>");
+}
+
+// fetch weather API -- need more work..don't really know how to do this one.
+function currentDayWeather(city) {
+  const apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=330db953764b679cb99918f065ab10a8";
+
+  fetch(apiUrl)
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((error) => alert("That's not a city. Please try again"));
+}
