@@ -55,12 +55,37 @@ function instantDisplay(inputValue) {
   $(".list-wrapper").append("<li class='history-list p-2'>" + inputValue + "</li>");
 }
 
-// fetch weather API -- need more work..don't really know how to do this one.
+// fetch weather API -- query for city name and imperial metrics
 function currentDayWeather(city) {
-  const apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=330db953764b679cb99918f065ab10a8";
+  const apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=330db953764b679cb99918f065ab10a8";
 
   fetch(apiUrl)
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-    .catch((error) => alert("That's not a city. Please try again"));
+    .then(function (response) {
+      response.json().then(function (data) {
+        console.log(data);
+        currentForecast(data);
+      });
+    })
+    .catch(function (err) {
+      console.log("no good", err);
+      alert("That's not a city. What were you thinking?");
+    });
+}
+
+// displaying current forecast weather information
+function currentForecast(today) {
+  const todayIcon = today.weather[0].icon;
+  const iconUrl = "http://openweathermap.org/img/wn/" + todayIcon + "@2x.png";
+  const cityDisplay = today.name;
+  const currentDate = new Date().toJSON().slice(0, 10);
+  const currentTemp = today.main.temp;
+  const currentWind = today.wind.speed;
+  const currentHum = today.main.humidity;
+
+  $(".current-weather-wrapper").addClass("border border-dark");
+  $(".current-weather").append("<img class='d-inline-block' src=" + iconUrl + ">");
+  $(".current-weather").append("<h3 class='d-inline-block align-middle'>" + cityDisplay + " | (" + currentDate + ")");
+  $(".current-weather-data").append("<p class='p-2'>Temperature:  " + currentTemp + " &#176F");
+  $(".current-weather-data").append("<p class='p-2'>Wind:  " + currentWind + " MPH");
+  $(".current-weather-data").append("<p class='p-2'>Humidity:  " + currentHum + " %");
 }
