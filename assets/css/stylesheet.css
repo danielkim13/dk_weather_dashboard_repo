@@ -8,3 +8,23 @@
 .head-bar {
   text-shadow: 2px 2px black;
 }
+
+.low {
+  background-color: rgb(43, 223, 43);
+}
+
+.moderate {
+  background-color: yellow;
+}
+
+.high {
+  background-color: orange;
+}
+
+.very-high {
+  background-color: rgb(203, 64, 203);
+}
+
+.extreme {
+  background-color: rgb(164, 95, 164);
+}

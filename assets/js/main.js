@@ -9,6 +9,7 @@ function cityNameInputHandler(e) {
     console.log(userCityName);
     savedSearch(userCityName);
     instantDisplay(userCityName);
+
     currentDayWeather(userCityName);
 
     // clear out the input value after user submit
@@ -88,4 +89,28 @@ function currentForecast(today) {
   $(".current-weather-data").append("<p class='p-2'>Temperature:  " + currentTemp + " &#176F");
   $(".current-weather-data").append("<p class='p-2'>Wind:  " + currentWind + " MPH");
   $(".current-weather-data").append("<p class='p-2'>Humidity:  " + currentHum + " %");
+
+  // UV Index. it is not part of data array so i have to do another fetch to get it
+  const lat = today.coord.lat;
+  const lon = today.coord.lon;
+
+  fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,minutely,hourly,daily,alerts&appid=330db953764b679cb99918f065ab10a8")
+    .then((response) => response.json())
+    .then((uvdata) => {
+      const uvIndex = uvdata.current.uvi;
+      console.log(uvIndex);
+      $(".current-weather-data").append("<p class='uv p-2'>UV Index:  <span>" + uvIndex);
+      if (uvIndex < 3) {
+        $(".uv span").attr("class", "low");
+      } else if (uvIndex >= 3 && uvIndex < 6) {
+        $(".uv span").attr("class", "moderate");
+      } else if (uvIndex >= 6 && uvIndex < 8) {
+        $(".uv span").attr("class", "high");
+      } else if (uvIndex >= 8 && uvIndex < 11) {
+        $(".uv span").attr("class", "very-high");
+      } else {
+        $(".uv span").attr("class", "extreme");
+      }
+    })
+    .catch((err) => alert("not working"));
 }
