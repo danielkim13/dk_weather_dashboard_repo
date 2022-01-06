@@ -5,11 +5,10 @@ function cityNameInputHandler(e) {
 
   const userCityName = $("#cityName").val().trim();
   // conditional to check if the input is valid or not.
-  if (userCityName) {
-    console.log(userCityName);
+  if (isNaN(userCityName)) {
+    console.log(typeof userCityName);
     savedSearch(userCityName);
     instantDisplay(userCityName);
-
     currentDayWeather(userCityName);
 
     // clear out the input value after user submit
@@ -17,7 +16,7 @@ function cityNameInputHandler(e) {
   } else if (userCityName === null) {
     alert("Please enter a valid city name");
   } else {
-    alert("Please enter a valid city name");
+    alert("Please enter a valid city name"); // !need to figure out how to check symbols.
   }
 }
 
@@ -28,10 +27,8 @@ let citySearchArry = JSON.parse(localStorage.getItem("city")) || [];
 
 function savedSearch(searchCity) {
   // variable initializing the local storage to receive obj
-  const loc = "location"; //placeholder for right now only
   const cityObj = {
     city: searchCity,
-    location: loc,
   };
 
   citySearchArry.push(cityObj);
@@ -46,18 +43,34 @@ function displayHistoricalSearch() {
   for (let i = 0; i < citySearchArry.length; i++) {
     $(".list-wrapper").append("<li class='history-list p-2'>" + citySearchArry[i].city);
   }
+  // make the search history clickable
+  $(document).ready(function () {
+    $(".history-list").click(function (event) {
+      const cityHistory = event.target.textContent;
+      console.log(cityHistory);
+      currentDayWeather(cityHistory);
+    });
+  });
 }
 displayHistoricalSearch();
 
 /* couldn't figure out how to display the search city instantly
 when user issue input value, so creating function to add the value to the end of
 ul element */
+// need to make this one event.target click as well
 function instantDisplay(inputValue) {
   $(".list-wrapper").append("<li class='history-list p-2'>" + inputValue + "</li>");
+  $(".history-list").click(() => {
+    currentDayWeather(inputValue);
+  });
 }
 
 // fetch weather API -- query for city name and imperial metrics
 function currentDayWeather(city) {
+  // bug fix 1.5.22 clearing children nodes
+  $(".current-weather").children().remove();
+  $(".current-weather-data").children().remove();
+
   const apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=330db953764b679cb99918f065ab10a8";
 
   fetch(apiUrl)

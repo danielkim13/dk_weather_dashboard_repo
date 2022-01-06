@@ -28,3 +28,12 @@
 .extreme {
   background-color: rgb(164, 95, 164);
 }
+
+.history-list:hover {
+  background-color: cadetblue;
+  border: black;
+  color: white;
+  font-weight: bolder;
+  text-shadow: black 1px 2px;
+  cursor: default;
+}
