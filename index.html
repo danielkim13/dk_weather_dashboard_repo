@@ -16,7 +16,7 @@
       <h2 class="head-bar text-light font-weight-light"><i class="fa-solid fa-meteor mr-2"></i>Weather Dashboard</h2>
     </header>
 
-    <section class="all-wrapper row">
+    <section class="all-wrapper row justify-content-around">
       <div class="left-wrapper flex-column col-md-3 ml-3 p-1 bg-light">
         <div class="card text-center">
           <h3 class="card-header">Search By City</h3>
@@ -32,7 +32,14 @@
           <div class="current-weather d-inline-block"></div>
           <div class="current-weather-data"></div>
         </div>
-        <div class="future-forecast-wrapper">Five Day Forecast</div>
+        <div class="future-forecast-wrapper row border border-dark m-2">
+          5-Day Forecast: (placeholder.. will just dynamically create)
+          <div class="day-one col-md-2" id="dayOne"></div>
+          <div class="day-two col-md-2" id="dayTwo"></div>
+          <div class="day-three col-md-2" id="dayThree"></div>
+          <div class="day-four col-md-2" id="dayFour"></div>
+          <div class="day-five col-md-2" id="dayFive"></div>
+        </div>
       </div>
     </section>
 
