@@ -10,6 +10,7 @@ function cityNameInputHandler(e) {
     savedSearch(userCityName);
     instantDisplay(userCityName);
     currentDayWeather(userCityName);
+    fiveDayForecast(userCityName);
 
     // clear out the input value after user submit
     $("#cityName").val("");
@@ -47,8 +48,9 @@ function displayHistoricalSearch() {
   $(document).ready(function () {
     $(".history-list").click(function (event) {
       const cityHistory = event.target.textContent;
-      console.log(cityHistory);
+      // console.log(cityHistory);
       currentDayWeather(cityHistory);
+      fiveDayForecast(cityHistory);
     });
   });
 }
@@ -62,6 +64,7 @@ function instantDisplay(inputValue) {
   $(".list-wrapper").append("<li class='history-list p-2'>" + inputValue + "</li>");
   $(".history-list").click(() => {
     currentDayWeather(inputValue);
+    fiveDayForecast(inputValue);
   });
 }
 
@@ -76,7 +79,7 @@ function currentDayWeather(city) {
   fetch(apiUrl)
     .then(function (response) {
       response.json().then(function (data) {
-        console.log(data);
+        // console.log(data);
         currentForecast(data);
       });
     })
@@ -111,7 +114,7 @@ function currentForecast(today) {
     .then((response) => response.json())
     .then((uvdata) => {
       const uvIndex = uvdata.current.uvi;
-      console.log(uvIndex);
+      // console.log(uvIndex);
       $(".current-weather-data").append("<p class='uv p-2'>UV Index:  <span>" + uvIndex);
       if (uvIndex < 3) {
         $(".uv span").attr("class", "low");
@@ -124,6 +127,20 @@ function currentForecast(today) {
       } else {
         $(".uv span").attr("class", "extreme");
       }
+    })
+    .catch((err) => alert("not working"));
+}
+
+// 5-day forecast dynamically displays info.
+function fiveDayForecast(cityName) {
+  $(".future-forecast-wrapper").text("5-Day Forecast:");
+  $(".future-forecast-wrapper").attr("class", "border border-dark");
+
+  // with the free subscription I'm limited.. can't fetch 5 days forecast.
+  fetch("https://api.openweathermap.org/data/2.5/forecast/daily?q=" + cityName + "&cnt=5&units=imperial&appid=876c146eea7b7cf6b54b8e5e52a182c3")
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
     })
     .catch((err) => alert("not working"));
 }
