@@ -10,13 +10,13 @@ function cityNameInputHandler(e) {
     savedSearch(userCityName);
     instantDisplay(userCityName);
     currentDayWeather(userCityName);
-    fiveDayForecast(userCityName);
     // clear out the input value after user submit
     $("#cityName").val("");
   } else if (userCityName === null) {
     alert("Please enter a valid city name");
   } else {
     alert("Please enter a valid city name"); // !need to figure out how to check symbols.
+    $("#cityName").val("");
   }
 }
 
@@ -58,7 +58,7 @@ when user issue input value, so creating function to add the value to the end of
 ul element */
 // need to make this one event.target click as well
 function instantDisplay(inputValue) {
-  $(".list-wrapper").append("<li class='history-list p-2'>" + inputValue + "</li>");
+  $(".list-wrapper").append("<p class='history-list p-2'>" + inputValue);
   $(".history-list").click(() => {
     currentDayWeather(inputValue);
   });
@@ -67,8 +67,8 @@ function instantDisplay(inputValue) {
 // fetch weather API -- query for city name and imperial metrics
 function currentDayWeather(city) {
   // bug fix 1.5.22 clearing children nodes
-  $(".current-weather").children().remove();
-  $(".current-weather-data").children().remove();
+  // $(".current-weather").empty();
+  // $(".current-weather-data").empty();
 
   const apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=330db953764b679cb99918f065ab10a8";
 
@@ -95,6 +95,9 @@ function currentForecast(today) {
   const currentTemp = today.main.temp;
   const currentWind = today.wind.speed;
   const currentHum = today.main.humidity;
+
+  $(".current-weather").empty();
+  $(".current-weather-data").empty();
 
   $(".current-weather-wrapper").addClass("border border-dark");
   $(".current-weather").append("<img class='d-inline-block' src=" + iconUrl + ">");
