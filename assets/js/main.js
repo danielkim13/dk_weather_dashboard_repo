@@ -7,8 +7,8 @@ function cityNameInputHandler(e) {
   // conditional to check if the input is valid or not.
   if (isNaN(userCityName)) {
     // console.log(typeof userCityName);
-    savedSearch(userCityName);
-    instantDisplay(userCityName);
+    // savedSearch(userCityName);
+    // instantDisplay(userCityName);
     currentDayWeather(userCityName);
     // clear out the input value after user submit
     $("#cityName").val("");
@@ -74,13 +74,19 @@ function currentDayWeather(city) {
 
   fetch(apiUrl)
     .then(function (response) {
-      response.json().then(function (data) {
-        // console.log(data);
-        currentForecast(data);
-      });
+      if (response.ok) {
+        response.json().then(function (data) {
+          currentForecast(data);
+          // console.log(data);
+          savedSearch(city);
+          instantDisplay(city);
+        });
+      } else {
+        alert("Error: check the city name and try again");
+      }
     })
-    .catch(function (err) {
-      alert("That's not a city. What were you thinking?");
+    .catch(function (error) {
+      alert("Unable to connect to open weather map");
     });
 }
 
