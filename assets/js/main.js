@@ -48,7 +48,6 @@ function displayHistoricalSearch() {
       const cityHistory = event.target.textContent;
       // console.log(cityHistory);
       currentDayWeather(cityHistory);
-      fiveDayForecast(cityHistory);
     });
   });
 }
@@ -76,7 +75,7 @@ function currentDayWeather(city) {
   fetch(apiUrl)
     .then(function (response) {
       response.json().then(function (data) {
-        // console.log(data);
+        console.log(data);
         currentForecast(data);
       });
     })
@@ -90,7 +89,9 @@ function currentForecast(today) {
   const todayIcon = today.weather[0].icon;
   const iconUrl = "http://openweathermap.org/img/wn/" + todayIcon + "@2x.png";
   const cityDisplay = today.name;
-  const currentDate = new Date().toJSON().slice(0, 10);
+  const uTime = today.dt;
+  const conversionTime = new Date(uTime * 1000);
+  const currentDate = conversionTime.toLocaleDateString("en-US");
   const currentTemp = today.main.temp;
   const currentWind = today.wind.speed;
   const currentHum = today.main.humidity;
@@ -136,8 +137,8 @@ function fiveDayForecast(lat, lon) {
   $(".future-forecast-wrapper").last().addClass("border border-dark");
 
   // with the free subscription I'm limited.. can't fetch 5 days forecast.
-  const appId = 876c146eea7b7cf6b54b8e5e52a182c3;
-  fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=current,minutely,hourly,alerts&units=imperial&appid=" + appId);
+  const appId = "876c146eea7b7cf6b54b8e5e52a182c3";
+  fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=current,minutely,hourly,alerts&units=imperial&appid=" + appId)
     .then((response) => response.json())
     .then((forecast) => {
       console.log(forecast);
@@ -145,3 +146,60 @@ function fiveDayForecast(lat, lon) {
     })
     .catch((err) => alert("Five Day Forecast Error"));
 }
+
+function forecastDataHandle(forecast) {
+  const forecastData = forecast.daily;
+
+  // clear out the child nodes
+  $("#dayOne").children().remove();
+  $("#dayTwo").children().remove();
+  $("#dayThree").children().remove();
+  $("#dayFour").children().remove();
+  $("#dayFive").children().remove();
+
+  // couldn't figure out how to do this using for loop method.
+  // DAY ONE
+  $("#dayOne").last().addClass("border border-dark bg-secondary text-light");
+  $("#dayOne").append("<p>" + new Date(forecastData[1].dt * 1000).toLocaleDateString("en-US"));
+  $("#dayOne").append("<img src='http://openweathermap.org/img/wn/" + forecastData[1].weather[0].icon + ".png'>");
+  $("#dayOne").append("<p>Temp: " + forecastData[1].temp.day + " &#176F");
+  $("#dayOne").append("<p>Wind: " + forecastData[1].wind_speed + " MPH");
+  $("#dayOne").append("<p>Hum: " + forecastData[1].humidity + "%");
+
+  // DAY TWO
+  $("#dayTwo").last().addClass("border border-dark bg-secondary text-light");
+  $("#dayTwo").append("<p>" + new Date(forecastData[2].dt * 1000).toLocaleDateString("en-US"));
+  $("#dayTwo").append("<img src='http://openweathermap.org/img/wn/" + forecastData[2].weather[0].icon + ".png'>");
+  $("#dayTwo").append("<p>Temp: " + forecastData[2].temp.day + " &#176F");
+  $("#dayTwo").append("<p>Wind: " + forecastData[2].wind_speed + " MPH");
+  $("#dayTwo").append("<p>Hum: " + forecastData[2].humidity + "%");
+
+  // DAY THREE
+  $("#dayThree").last().addClass("border border-dark bg-secondary text-light");
+  $("#dayThree").append("<p>" + new Date(forecastData[3].dt * 1000).toLocaleDateString("en-US"));
+  $("#dayThree").append("<img src='http://openweathermap.org/img/wn/" + forecastData[3].weather[0].icon + ".png'>");
+  $("#dayThree").append("<p>Temp: " + forecastData[3].temp.day + " &#176F");
+  $("#dayThree").append("<p>Wind: " + forecastData[3].wind_speed + " MPH");
+  $("#dayThree").append("<p>Hum: " + forecastData[3].humidity + "%");
+
+  // DAY FOUR
+  $("#dayFour").last().addClass("border border-dark bg-secondary text-light");
+  $("#dayFour").append("<p>" + new Date(forecastData[4].dt * 1000).toLocaleDateString("en-US"));
+  $("#dayFour").append("<img src='http://openweathermap.org/img/wn/" + forecastData[4].weather[0].icon + ".png'>");
+  $("#dayFour").append("<p>Temp: " + forecastData[4].temp.day + " &#176F");
+  $("#dayFour").append("<p>Wind: " + forecastData[4].wind_speed + " MPH");
+  $("#dayFour").append("<p>Hum: " + forecastData[4].humidity + "%");
+
+  // DAY FIVE
+  $("#dayFive").last().addClass("border border-dark bg-secondary text-light");
+  $("#dayFive").append("<p>" + new Date(forecastData[5].dt * 1000).toLocaleDateString("en-US"));
+  $("#dayFive").append("<img src='http://openweathermap.org/img/wn/" + forecastData[5].weather[0].icon + ".png'>");
+  $("#dayFive").append("<p>Temp: " + forecastData[5].temp.day + " &#176F");
+  $("#dayFive").append("<p>Wind: " + forecastData[5].wind_speed + " MPH");
+  $("#dayFive").append("<p>Hum: " + forecastData[5].humidity + "%");
+}
+
+/* Bugs
+1. city duplicate in localStorage and search history column.
+2. input value need to be checked for any symbols.
+*/
