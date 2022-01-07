@@ -22,7 +22,9 @@
           <h3 class="card-header">Search By City</h3>
           <form id="cityForm" class="card-body">
             <input class="mb-3" type="text" id="cityName" autofocus="true" placeholder="City Name" />
-            <button type="submit" id="weatherBtn" class="btn btn-primary">Get Weather</button>
+            <button type="submit" id="weatherBtn" class="btn btn-primary">
+              <i class="fas fa-search-location"></i>
+            </button>
           </form>
         </div>
         <div class="history-wrapper text-center border border-dark border-start-0 border-end-0 my-2 p-2"></div>
@@ -32,12 +34,13 @@
           <div class="current-weather d-inline-block"></div>
           <div class="current-weather-data"></div>
         </div>
+        <div class="forecast-title m-2 p-1"></div>
         <div class="future-forecast-wrapper row m-2">
-          <div class="day-one col-md-2" id="dayOne"></div>
-          <div class="day-two col-md-2" id="dayTwo"></div>
-          <div class="day-three col-md-2" id="dayThree"></div>
-          <div class="day-four col-md-2" id="dayFour"></div>
-          <div class="day-five col-md-2" id="dayFive"></div>
+          <div class="day col-md-2 m-2 text-center" id="dayOne"></div>
+          <div class="day col-md-2 m-2 text-center" id="dayTwo"></div>
+          <div class="day col-md-2 m-2 text-center" id="dayThree"></div>
+          <div class="day col-md-2 m-2 text-center" id="dayFour"></div>
+          <div class="day col-md-2 m-2 text-center" id="dayFive"></div>
         </div>
       </div>
     </section>
