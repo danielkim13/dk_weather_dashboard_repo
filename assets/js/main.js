@@ -6,12 +6,11 @@ function cityNameInputHandler(e) {
   const userCityName = $("#cityName").val().trim();
   // conditional to check if the input is valid or not.
   if (isNaN(userCityName)) {
-    console.log(typeof userCityName);
+    // console.log(typeof userCityName);
     savedSearch(userCityName);
     instantDisplay(userCityName);
     currentDayWeather(userCityName);
     fiveDayForecast(userCityName);
-
     // clear out the input value after user submit
     $("#cityName").val("");
   } else if (userCityName === null) {
@@ -23,11 +22,10 @@ function cityNameInputHandler(e) {
 
 $("#cityForm").submit(cityNameInputHandler);
 
-// search history to localStorage
+// variable initializing the local storage to receive obj
 let citySearchArry = JSON.parse(localStorage.getItem("city")) || [];
 
 function savedSearch(searchCity) {
-  // variable initializing the local storage to receive obj
   const cityObj = {
     city: searchCity,
   };
@@ -64,7 +62,6 @@ function instantDisplay(inputValue) {
   $(".list-wrapper").append("<li class='history-list p-2'>" + inputValue + "</li>");
   $(".history-list").click(() => {
     currentDayWeather(inputValue);
-    fiveDayForecast(inputValue);
   });
 }
 
@@ -84,7 +81,6 @@ function currentDayWeather(city) {
       });
     })
     .catch(function (err) {
-      console.log("no good", err);
       alert("That's not a city. What were you thinking?");
     });
 }
@@ -110,6 +106,9 @@ function currentForecast(today) {
   const lat = today.coord.lat;
   const lon = today.coord.lon;
 
+  // calling the 5-day forecast since lat/lon is required. city search is not a part of free service the api provides... frustrating!!
+  fiveDayForecast(lat, lon);
+
   fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=minutely,minutely,hourly,daily,alerts&appid=330db953764b679cb99918f065ab10a8")
     .then((response) => response.json())
     .then((uvdata) => {
@@ -132,15 +131,17 @@ function currentForecast(today) {
 }
 
 // 5-day forecast dynamically displays info.
-function fiveDayForecast(cityName) {
-  $(".future-forecast-wrapper").text("5-Day Forecast:");
-  $(".future-forecast-wrapper").attr("class", "border border-dark");
+function fiveDayForecast(lat, lon) {
+  $(".forecast-title").text("5-Day Forecast:");
+  $(".future-forecast-wrapper").last().addClass("border border-dark");
 
   // with the free subscription I'm limited.. can't fetch 5 days forecast.
-  fetch("https://api.openweathermap.org/data/2.5/forecast/daily?q=" + cityName + "&cnt=5&units=imperial&appid=876c146eea7b7cf6b54b8e5e52a182c3")
+  const appId = 876c146eea7b7cf6b54b8e5e52a182c3;
+  fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=current,minutely,hourly,alerts&units=imperial&appid=" + appId);
     .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
+    .then((forecast) => {
+      console.log(forecast);
+      forecastDataHandle(forecast);
     })
-    .catch((err) => alert("not working"));
+    .catch((err) => alert("Five Day Forecast Error"));
 }
