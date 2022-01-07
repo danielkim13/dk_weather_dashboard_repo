@@ -75,7 +75,7 @@ function currentDayWeather(city) {
   fetch(apiUrl)
     .then(function (response) {
       response.json().then(function (data) {
-        console.log(data);
+        // console.log(data);
         currentForecast(data);
       });
     })
@@ -141,7 +141,7 @@ function fiveDayForecast(lat, lon) {
   fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=current,minutely,hourly,alerts&units=imperial&appid=" + appId)
     .then((response) => response.json())
     .then((forecast) => {
-      console.log(forecast);
+      // console.log(forecast);
       forecastDataHandle(forecast);
     })
     .catch((err) => alert("Five Day Forecast Error"));
