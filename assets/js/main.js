@@ -29,13 +29,50 @@ function savedSearch(searchCity) {
   const cityObj = {
     city: searchCity,
   };
-
+  // let cityValArray = citySearchArry.map(function (item) {
+  //   return item.city;
+  // });
+  // console.log(cityValArray);
   citySearchArry.push(cityObj);
   localStorage.setItem("city", JSON.stringify(citySearchArry));
+  // if ((citySearchArry = [])) {
+  //   citySearchArry.push(cityObj);
+  //   localStorage.setItem("city", JSON.stringify(citySearchArry));
+  // } else if (!cityValArray.includes(searchCity)) {
+  //   citySearchArry.push(cityObj);
+  //   localStorage.setItem("city", JSON.stringify(citySearchArry));
+  // }
+
+  // cityValArray.forEach(function (city) {
+  //   if (city !== searchCity) {
+  //     console.log("not a dup");
+  //     citySearchArry.push(cityObj);
+  //     localStorage.setItem("city", JSON.stringify(citySearchArry));
+  //   } else {
+  //     console.log("is a dup");
+  //   }
+  // });
+
+  // citySearchArry.forEach((item) => console.log(item));
+
+  // for (let i = 0; i < citySearchArry.length; i++) {
+  //   const storageCity = citySearchArry[i].city;
+  //   if(storageCity !== searchCity) {
+  //   }
+  // }
+
+  // const isDup = citySearchArry.some((item, index) => index !== citySearchArry.indexOf(item));
+
+  // if (!isDup) {
+  //   console.log("array doesn't contain dup");
+  // } else {
+  //   console.log("array contains dup");
+  // }
 }
 
 // displaying Historical search and when clicked it, the city name gets push to input.
 function displayHistoricalSearch() {
+  $(".history-wrapper").empty();
   JSON.parse(localStorage.getItem("city")) || [];
   $(".history-wrapper").append("<ul class='list-wrapper p-1 m-0'>");
 
@@ -45,6 +82,7 @@ function displayHistoricalSearch() {
   // make the search history clickable
   $(document).ready(function () {
     $(".history-list").click(function (event) {
+      event.stopPropagation();
       const cityHistory = event.target.textContent;
       // console.log(cityHistory);
       executeHistory(cityHistory); //! param is data not the city.. hmmm
@@ -57,12 +95,13 @@ displayHistoricalSearch();
 when user issue input value, so creating function to add the value to the end of
 ul element */
 // need to make this one event.target click as well
-function instantDisplay(inputValue) {
-  $(".list-wrapper").append("<p class='history-list p-2'>" + inputValue);
-  $(".history-list").click(() => {
-    executeHistory(inputValue); // ! param is data not the city...
-  });
-}
+// function instantDisplay(inputValue) {
+//   $(".list-wrapper").append("<li class='history-list p-2'>" + inputValue);
+//   $(".history-list").click((event) => {
+//     event.stopPropagation();
+//     executeHistory(inputValue); // ! param is data not the city...
+//   });
+// }
 
 // intermediate fetch for history search line. because I'm calling the savedsearch and instantdiplay functions after the response comes back. had to write this bridge function.
 function executeHistory(cityName) {
@@ -99,7 +138,7 @@ function currentDayWeather(city) {
           currentForecast(data);
           // console.log(data);
           savedSearch(city);
-          instantDisplay(city);
+          displayHistoricalSearch();
         });
       } else {
         alert("Error: check the city name and try again");
@@ -227,8 +266,3 @@ function forecastDataHandle(forecast) {
   $("#dayFive").append("<p>Wind: " + forecastData[5].wind_speed + " MPH");
   $("#dayFive").append("<p>Hum: " + forecastData[5].humidity + "%");
 }
-
-/* Bugs
-1. city duplicate in localStorage and search history column.
-2. input value need to be checked for any symbols.
-*/
