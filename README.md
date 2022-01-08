@@ -56,4 +56,4 @@
 
 ### ScreenShot of the project
 
-![]("update later")
+![](./assets/img/dk_weather_dashboard.png)
