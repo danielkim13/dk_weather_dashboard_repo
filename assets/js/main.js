@@ -7,8 +7,8 @@ function cityNameInputHandler(e) {
   // conditional to check if the input is valid or not.
   if (isNaN(userCityName)) {
     // console.log(typeof userCityName);
-    savedSearch(userCityName);
-    instantDisplay(userCityName);
+    // savedSearch(userCityName);
+    // instantDisplay(userCityName);
     currentDayWeather(userCityName);
     // clear out the input value after user submit
     $("#cityName").val("");
@@ -47,7 +47,7 @@ function displayHistoricalSearch() {
     $(".history-list").click(function (event) {
       const cityHistory = event.target.textContent;
       // console.log(cityHistory);
-      currentDayWeather(cityHistory);
+      executeHistory(cityHistory); //! param is data not the city.. hmmm
     });
   });
 }
@@ -60,8 +60,28 @@ ul element */
 function instantDisplay(inputValue) {
   $(".list-wrapper").append("<p class='history-list p-2'>" + inputValue);
   $(".history-list").click(() => {
-    currentDayWeather(inputValue);
+    executeHistory(inputValue); // ! param is data not the city...
   });
+}
+
+// intermediate fetch for history search line. because I'm calling the savedsearch and instantdiplay functions after the response comes back. had to write this bridge function.
+function executeHistory(cityName) {
+  const appID = "330db953764b679cb99918f065ab10a8";
+  const apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&units=imperial&appid=" + appID;
+
+  fetch(apiUrl)
+    .then((response) => {
+      if (response.ok) {
+        response.json().then((data) => {
+          currentForecast(data);
+        });
+      } else {
+        alert("Error: seems like the history search isn't working properly");
+      }
+    })
+    .catch((error) => {
+      alert("Unable to connect to the API");
+    });
 }
 
 // fetch weather API -- query for city name and imperial metrics
@@ -74,13 +94,19 @@ function currentDayWeather(city) {
 
   fetch(apiUrl)
     .then(function (response) {
-      response.json().then(function (data) {
-        // console.log(data);
-        currentForecast(data);
-      });
+      if (response.ok) {
+        response.json().then(function (data) {
+          currentForecast(data);
+          // console.log(data);
+          savedSearch(city);
+          instantDisplay(city);
+        });
+      } else {
+        alert("Error: check the city name and try again");
+      }
     })
-    .catch(function (err) {
-      alert("That's not a city. What were you thinking?");
+    .catch(function (error) {
+      alert("Unable to connect to open weather map");
     });
 }
 
